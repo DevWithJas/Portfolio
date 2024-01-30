@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Professional Portfolio</title>
+    <style>
+        /* Reset and basic styles */
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100%;
+            transition: background-color 0.3s;
+        }
+
+        /* Full-page background with parallax effect */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-image: url('https://i.gifer.com/3BBS.gif');
+            background-size: cover;
+            background-attachment: fixed;
+            z-index: -1;
+            filter: blur(5px);
+            /* Adjust the background blur amount */
+        }
+
+        /* Overlay for background */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            transition: background 0.3s;
+            z-index: 0;
+            backdrop-filter: blur(5px);
+            /* Adjust the overlay blur amount */
+        }
+
+        /* Dark theme overlay */
+        body.dark-theme .overlay {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Light theme overlay */
+        body.light-theme .overlay {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Content container */
+        .content-container {
+            position: relative;
+            z-index: 1;
+            color: white;
+            padding-top: 10%;
+            /* Use percentage-based padding for responsiveness */
+        }
+
+        /* Light theme text color */
+        body.light-theme .content-container {
+            color: black;
+        }
+
+        /* Navigation bar styles */
+        nav {
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 2;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav ul li:last-child {
+            margin-right: 0;
+        }
+
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            /* Add a semi-transparent top border */
+            padding-top: 10px;
+            /* Optional: Add padding to space out the footer */
+        }
+
+
+        nav ul li a img {
+            width: 20px;
+            /* Adjust the width of the icons */
+            height: 20px;
+            /* Adjust the height of the icons */
+            margin-right: 5px;
+            /* Adjust the spacing between icons */
+            border-radius: 50%;
+            /* Make the icons circular */
+        }
+
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 50%;
+            /* Adjust the top position to center vertically */
+            right: 1.5px;
+            /* Adjust the distance from the right side (increase this value) */
+            transform: translateY(-50%);
+            /* Center the button vertically */
+            z-index: 3;
+            /* Increase the z-index to ensure it's above other elements */
+        }
+
+        #theme-toggle {
+            cursor: pointer;
+            padding: 10px 10px;
+            /* Adjust padding to make the button half its width */
+            border: none;
+            background-color: #f0f0f0;
+            color: #333;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            writing-mode: vertical-rl;
+            /* Vertical writing mode */
+        }
+
+        .light-theme #theme-toggle {
+            background-color: #333;
+            color: #f0f0f0;
+        }
+
+        /* About Me section */
+        .about-me {
+            padding: 5% 2%;
+            /* Use percentage-based padding for responsiveness */
+            text-align: left;
+            max-width: 80%;
+            /* Use percentage-based max-width for responsiveness */
+            margin: auto;
+        }
+
+        .about-me h1 {
+            color: inherit;
+        }
+
+        .about-me p {
+            color: inherit;
+            font-size: 1.2em;
+            line-height: 1.6;
+            transition: transform 0.3s;
+        }
+
+        /* Parallax effect on text */
+        body.dark-theme .about-me p {
+            transform: translateY(5px);
+        }
+
+        body.light-theme .about-me p {
+            transform: translateY(-5px);
+        }
+
+        /* Card for your photo */
+        .photo-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 80%;
+            /* Use percentage-based max-width for responsiveness */
+            margin: auto;
+            text-align: center;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .photo-card img {
+            max-width: 100%;
+            /* Ensure the image fits within the card */
+            border-radius: 50%;
+            /* Make the image circular */
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 768px) {
+            .content-container {
+                padding-top: 15%;
+            }
+
+            .about-me {
+                padding: 5% 2%;
+                max-width: 90%;
+            }
+
+            .photo-card {
+                max-width: 90%;
+            }
+
+            nav ul li {
+                margin-right: 10px;
+            }
+
+            #theme-toggle {
+                padding: 10px 16px;
+                /* Further reduce the button size for smaller screens */
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                display: block;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            /* Adjust the navigation bar position */
+            nav {
+                text-align: center;
+            }
+
+            nav ul {
+                display: inline-block;
+            }
+
+            nav ul li {
+                display: inline-block;
+                margin: 0 10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            nav ul li a {
+                padding: 10px 12px;
+                /* Adjust padding for smaller screens */
+            }
+        }
+    </style>
+</head>
+
+<body class="dark-theme">
+    <div class="background-container"></div>
+    <div class="overlay"></div>
+
+    <div class="content-container">
+        <!-- Navigation bar -->
+        <nav>
+            <ul>
+                <li><a href="#about-me">About Me</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#frameworks-used">Frameworks Used</a></li>
+                <li><a href="#" id="instagram-link"><img
+                            src="https://cdn.icon-icons.com/icons2/836/PNG/512/Instagram_icon-icons.com_66804.png"
+                            alt="Instagram"></a></li>
+                <li><a href="#" id="linkedin-link"><img
+                            src="https://cdn1.iconfinder.com/data/icons/logotypes/32/circle-linkedin-512.png"
+                            alt="LinkedIn"></a></li>
+                <li><a href="#" id="twitter-link"><img src="https://img.icons8.com/?size=48&id=cMRBi0rI3iwb&format=png"
+                            alt=https://twitter.com/JaitlyJas></a></li>
+                <li><a href="#blogs">Blogs</a></li>
+
+            </ul>
+        </nav>
+
+
+
+        <!-- Theme toggle button -->
+        <div class="theme-toggle">
+            <button id="theme-toggle">Toggle Theme</button>
+        </div>
+
+        <!-- About Me section -->
+
+        <section id="about-me" class="about-me">
+            <div class="about-me-container">
+                <img src="https://i.imgur.com/rmXLO2q.jpeg" alt="Your Photo">
+                <div class="about-me-text">
+                    <h1>About Me</h1>
+                    <p>
+                        I am a dedicated professional in the field of Machine Learning (ML), Deep Learning (DL), and
+                        Data Analytics. With a focus on developing advanced algorithms, I strive to uncover meaningful
+                        insights from complex datasets. My expertise also extends to Explainable AI (XAI), where I
+                        utilize tools like LIME and SHAP to enhance the transparency and interpretability of machine
+                        learning models. This not only aids in building robust models but also clarifies their
+                        decision-making processes, ensuring the integrity and trustworthiness of my work.
+                    </p>
+                    <p>
+                        My commitment to the field is reflected in my continuous exploration of emerging technologies
+                        and their practical applications. The portfolio showcased here is a testament to my skills in
+                        ML, DL, and problem-solving, driven by data.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <style>
+            .about-me-container {
+                display: flex;
+                align-items: center;
+            }
+
+            .about-me img {
+                max-width: 30%;
+                height: auto;
+                margin-right: 20px;
+            }
+
+            .about-me-text {
+                flex-grow: 1;
+            }
+
+            @media screen and (max-width: 768px) {
+                .about-me-container {
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                }
+
+                .about-me img {
+                    max-width: 50%;
+                    margin-right: 0;
+                    margin-bottom: 20px;
+                }
+            }
+        </style>
+        <!-- Projects section -->
+
+        <section id="projects" class="projects">
+            <div class="projects-container">
+                <h1>Favourite Projects</h1>
+                <div class="project">
+                    <img src="https://i.imgur.com/mjdYQZT.png" alt="Project 1">
+                    <div class="project-text">
+                        <h2>Aavagaman</h2>
+                        <p>
+                            Aavagaman V1, an intuitive and user-friendly transit information system designed to enhance
+                            the daily commute experience. My application leverages cutting-edge technologies to provide
+                            real-time bus information, enabling users to make informed decisions about their travel
+                            routes. Aavagaman, which translates to 'coming and going' in Hindi, embodies the essence of
+                            smooth and reliable transit for its users.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="project">
+                    <img src="https://i.imgur.com/uzHT9o3.png" alt="Project 2">
+                    <div class="project-text">
+                        <h2>Sentinel Mark2</h2>
+                        <p>
+                            Sentinel Mark 2, an update of Sentinel Mark 1, is a part of the Sentinel series. This
+                            advanced crime analysis and prediction tool is meticulously designed to assist law
+                            enforcement agencies with unmatched precision and accuracy. It harnesses state-of-the-art
+                            analytics to forecast criminal activities, facilitating proactive and preemptive measures
+                            for public safety. The integration of modern technologies in Sentinel Mark 2 provides an
+                            unparalleled edge in the realm of crime prevention and analysis.
+                        </p>
+                    </div>
+                </div>
+        </section>
+
+
+        <section id="frameworks-used" class="frameworks-used">
+            <div class="frameworks-container">
+                <h1>ML Frameworks Used</h1>
+                <div class="framework-list">
+                    
+                    <ul>
+                        <li><img src="https://www.gstatic.com/devrel-devsite/prod/v42640c93f7fab57c4283b9dae6637d7a9b0c9c398ce5fff015a4cf8de65e6ed5/tensorflow/images/lockup.svg" alt="TensorFlow"></li>
+                        <li><img src="https://scikit-learn.org/stable/_static/scikit-learn-logo-small.png" alt="Scikit-Learn"></li>
+                        <li><img src="https://keras.io/img/logo.png" alt="Keras"></li>
+                        <li><img src="https://h2o.ai/content/experience-fragments/h2o/us/en/site/header/master/_jcr_content/root/container/header_copy/logo.coreimg.svg/1706299256638/h2o-logo.svg" alt="Keras"></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+
+
+        <style>
+            .frameworks-used {
+                padding: 5% 2%;
+                max-width: 80%;
+                margin: auto;
+                font-family: 'Arial', sans-serif;
+            }
+
+            .frameworks-container h1 {
+                text-align: center;
+                color: #0c0505;
+                margin-bottom: 20px;
+            }
+
+            .framework-list p {
+                font-size: 18px;
+                color: #555;
+                margin-bottom: 10px;
+            }
+
+            .framework-list ul {
+                list-style: none;
+                padding: 0;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .framework-list ul li {
+                background: #f7f7f7;
+                margin: 10px;
+                padding: 10px 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .framework-list img {
+                height: 30px;
+                width: auto;
+            }
+
+            .framework-list ul li:hover {
+                background: #e7e7e7;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                cursor: pointer;
+            }
+        </style>
+
+
+        <style>
+            .projects-container {
+                padding: 10% 2%;
+                /* Increase the top padding for more space */
+                text-align: left;
+                max-width: 80%;
+                margin: auto;
+            }
+
+            .project {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .project img {
+                max-width: 30%;
+                height: auto;
+                margin-right: 20px;
+                border-radius: 10px;
+            }
+
+            .project-text {
+                flex-grow: 1;
+            }
+
+            .project-text h2 {
+                color: inherit;
+            }
+
+            .project-text p {
+                color: inherit;
+                font-size: 1.2em;
+                line-height: 1.6;
+            }
+
+            @media screen and (max-width: 768px) {
+                .projects-container {
+                    max-width: 90%;
+                }
+
+                .project {
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                }
+
+                .project img {
+                    max-width: 50%;
+                    margin-right: 0;
+                    margin-bottom: 10px;
+                }
+            }
+
+            .projects-container {
+                padding: 10% 2%;
+                /* Increase the top padding for more space */
+                text-align: left;
+                max-width: 80%;
+                margin: auto;
+            }
+
+            .project img {
+                max-width: 40%;
+                /* Adjust the width of the image */
+                margin-right: 20px;
+                border-radius: 10px;
+            }
+        </style>
+        <!-- Blogs section -->
+        <!-- Blogs section -->
+        <section id="blogs" class="blogs">
+            <div class="blogs-container">
+                <h1>Blogs</h1>
+                <div class="blog-post">
+                    <h2 class="blog-title">
+                        <a href="https://medium.com/@sergeahead29/prompt-engineering-unleashing-the-power-of-ai-with-skillful-crafting-e83c078e3802"
+                            target="_blank" class="blog-link">Prompt Engineering</a>
+                    </h2>
+
+                    <div class="blog-image">
+                        <a href="https://medium.com/@sergeahead29/prompt-engineering-unleashing-the-power-of-ai-with-skillful-crafting-e83c078e3802"
+                            target="_blank">
+                            <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*isye15TqY9pabddDXTb9fA.png"
+                                alt="Blog Post 1 Image">
+                        </a>
+                    </div>
+                    </a>
+                    <p>
+                        Prompt engineering is a vital discipline in AI, enabling control over language models' outputs.
+                        It involves crafting effective instructions to guide AI models and improve their accuracy and
+                        usefulness. To become a proficient prompt engineer, understand AI fundamentals, enhance language
+                        skills, and grasp model capabilities and biases. Define clear objectives, refine prompts
+                        iteratively, and leverage prompt examples. Engage with the prompt engineering community to learn
+                        and grow. Click the image to learn more.
+                    </p>
+                </div>
+                <div class="blog-post">
+                    <h2 class="blog-title">
+                        <a href="https://medium.com/@sergeahead29/automation-and-robotics-9a97220d4b08" target="_blank"
+                            class="blog-link">Automation and Robotics</a>
+                    </h2>
+
+                    <div class="blog-image">
+                        <a href="https://medium.com/@sergeahead29/automation-and-robotics-9a97220d4b08" target="_blank">
+                            <img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*_b2okyySWbtDsgy9BEKIVw.png"
+                                alt="Blog Post 2 Image">
+                        </a>
+                    </div>
+                    </a>
+                    <p>This blog explores the vital role of automation and robotics in today's world. It discusses their
+                        impact on smart device production, manufacturing, and various industries. Automation
+                        professionals drive innovation, with potential GDP growth of $1.1 trillion. Robotics finds
+                        applications in electronics, AI, and more. These technologies could contribute $15 trillion to
+                        the global economy by 2030. Click the image to learn more.</p>
+                </div>
+                <!-- Add more blog posts as needed -->
+            </div>
+        </section>
+
+
+
+
+
+        <style>
+            /* Blogs section styles */
+            .blogs-container {
+                padding: 5% 2%;
+                text-align: left;
+                max-width: 80%;
+                margin: auto;
+            }
+
+
+
+            /* Blogs section styles */
+            .blogs-container {
+                padding: 5% 2%;
+                text-align: left;
+                max-width: 80%;
+                margin: auto;
+            }
+
+            /* Styling for individual blog posts */
+            .blog-post {
+                margin-bottom: 20px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                /* Add a small border radius */
+                overflow: hidden;
+            }
+
+            .blog-image {
+                max-width: 150px;
+                /* Set the maximum width for the images */
+                margin-right: 10px;
+                float: left;
+            }
+
+            .blog-image img {
+                max-width: 100%;
+                border-radius: 5px;
+                /* Add a small border radius to the image */
+            }
+
+            .blog-content {
+                overflow: hidden;
+                /* Ensure text doesn't overlap with the image */
+            }
+
+            .blog-title {
+                font-size: 1.2em;
+                font-weight: bold;
+                margin: 0;
+            }
+
+            .blog-title.light-theme {
+                color: black;
+            }
+
+            .blog-title.dark-theme {
+                color: white;
+            }
+
+            .blog-link {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .blog-link:hover {
+                color: #ff402c;
+            }
+
+            /* Heading color for dark theme */
+            body.dark-theme .blogs-container .blog-title {
+                color: white;
+            }
+        </style>
+
+        <div id="back-to-top">
+            <a href="#top">Back to Top</a>
+        </div>
+
+        <style>
+            #back-to-top {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: #333;
+                color: #fff;
+                padding: 10px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                display: none;
+                /* Initially hide the button */
+            }
+
+            #back-to-top a {
+                text-decoration: none;
+                color: #fff;
+            }
+
+            #back-to-top:hover {
+                background-color: #555;
+            }
+        </style>
+
+        <div id="floating-math-symbols"></div>
+
+        <div id="floating-math-symbols"></div>
+
+        <style>
+            /* Your existing styles go here */
+
+            /* Floating math symbols styles */
+            #floating-math-symbols {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+            }
+
+            .floating-math-symbol {
+                position: absolute;
+                font-size: 20px;
+                opacity: 0;
+                animation: float 5s linear infinite, fade 5s linear infinite;
+            }
+
+            @keyframes float {
+                0% {
+                    transform: translateY(100%);
+                    left: calc(100% * random());
+                }
+
+                100% {
+                    transform: translateY(-100%);
+                    left: calc(100% * random());
+                }
+            }
+
+            @keyframes fade {
+
+                0%,
+                100% {
+                    opacity: 0;
+                }
+
+                50% {
+                    opacity: 1;
+                }
+            }
+        </style>
+
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2024 ML Professional Portfolio</p>
+                <p>Contact: your.email@example.com</p>
+            </div>
+        </footer>
+
+        <style>
+            /* Footer styles */
+            footer {
+                background-color: rgba(0, 0, 0, 0.7);
+                color: white;
+                text-align: center;
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                padding: 5px 0;
+                /* Reduce padding to make it thinner */
+                font-size: 12px;
+                /* Further reduce font size */
+            }
+
+            footer a {
+                color: #ff6f61;
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+
+            footer a:hover {
+                color: #ff402c;
+            }
+
+            footer p {
+                margin: 0;
+            }
+        </style>
+
+    </div>
+    </div>
+
+
+
+
+
+
+    <script>
+        // Theme toggle functionality
+        var themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function () {
+            document.body.classList.toggle('light-theme');
+            var aboutMeParagraphs = document.querySelectorAll('.about-me p');
+            aboutMeParagraphs.forEach(function (paragraph) {
+                paragraph.style.transform = 'translateY(0)'; // Reset parallax effect on theme change
+            });
+        });
+
+        // Parallax effect for text in the About Me section
+        window.addEventListener('scroll', function () {
+            var scrollPosition = window.pageYOffset;
+            var aboutMeParagraphs = document.querySelectorAll('.about-me p');
+            aboutMeParagraphs.forEach(function (paragraph) {
+                var direction = document.body.classList.contains('light-theme') ? -1 : 1;
+                paragraph.style.transform = 'translateY(' + (scrollPosition * 0.1 * direction) + 'px)';
+            });
+        });
+
+        // Parallax effect for text in the Projects section
+        window.addEventListener('scroll', function () {
+            var scrollPosition = window.pageYOffset;
+
+            // Check if the screen width is greater than 768px (adjust this value as needed)
+            if (window.innerWidth > 768) {
+                // Parallax effect for project headings
+                var projectHeadings = document.querySelectorAll('.projects-container .project-text h2');
+                projectHeadings.forEach(function (heading) {
+                    var direction = document.body.classList.contains('light-theme') ? -1 : 1;
+                    heading.style.transform = 'translateY(' + (scrollPosition * 0.1 * direction) + 'px)';
+                });
+
+                // Parallax effect for project paragraphs
+                var projectParagraphs = document.querySelectorAll('.projects-container .project-text p');
+                projectParagraphs.forEach(function (paragraph) {
+                    var direction = document.body.classList.contains('light-theme') ? -1 : 1;
+                    paragraph.style.transform = 'translateY(' + (scrollPosition * 0.1 * direction) + 'px)';
+                });
+            }
+        });
+
+        // Show/hide back-to-top button based on scroll position
+        window.addEventListener('scroll', function () {
+            var backToTopButton = document.getElementById('back-to-top');
+            if (window.scrollY > 500) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+
+        // Smooth scroll to top when back-to-top button is clicked
+        document.getElementById('back-to-top').addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+
+
+        // Smooth scroll to section when navbar link is clicked
+        var navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                var targetId = link.getAttribute('href').substring(1); // Remove '#' from the href
+                var targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    var offset = targetSection.offsetTop - document.querySelector('nav').offsetHeight;
+                    window.scrollTo({
+                        top: offset,
+                        behavior: 'smooth' // This line enables smooth scrolling
+                    });
+                }
+            });
+        });
+
+        // Smooth scroll to project section when project link is clicked
+        var projectLinks = document.querySelectorAll('.projects-container .project-text h2');
+        projectLinks.forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                var targetId = link.parentElement.parentElement.id;
+                var targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    var offset = targetSection.offsetTop - document.querySelector('nav').offsetHeight;
+                    window.scrollTo({
+                        top: offset,
+                        behavior: 'smooth' // This line enables smooth scrolling
+                    });
+                }
+            });
+        });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const container = document.getElementById("floating-math-symbols");
+
+            // Define an array of math symbols
+            const mathSymbols = ["∑", "∫", "Δ", "√", "∞"];
+
+            function createFloatingSymbol() {
+                const symbol = document.createElement("div");
+                symbol.className = "floating-math-symbol";
+                symbol.innerHTML = mathSymbols[Math.floor(Math.random() * mathSymbols.length)];
+                symbol.style.left = Math.random() * 100 + "vw";
+                container.appendChild(symbol);
+
+                // Remove the symbol after animation completes
+                symbol.addEventListener("animationiteration", () => {
+                    container.removeChild(symbol);
+                });
+            }
+
+            // Create new floating symbols at intervals
+            setInterval(createFloatingSymbol, 3000);
+        });
+
+
+        // JavaScript to open social media links
+        document.getElementById('instagram-link').addEventListener('click', function () {
+            window.open('https://www.instagram.com/_.bigby.wolf_/?igshid=ZnVweTluYjdxamd3', '_blank');
+        });
+
+        document.getElementById('linkedin-link').addEventListener('click', function () {
+            window.open('https://www.linkedin.com/in/jas-sharma-217614233/', '_blank');
+        });
+
+        document.getElementById('twitter-link').addEventListener('click', function () {
+            window.open('https://twitter.com/JaitlyJas', '_blank');
+        });
+
+    </script>
+</body>
+
+</html>
+</body>
+
+</html>
